@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getBySlug, deletePost } from '../lib/postsApi'
 import { useAuth } from '../auth'
 import PageHeader from '../components/PageHeader'
+import Comments from '../components/Comments'
 
 export default function PostDetail() {
   const { slug } = useParams()
@@ -127,6 +128,9 @@ export default function PostDetail() {
                   </button>
                 </div>
               )}
+
+              {/* 댓글 */}
+              <Comments postSlug={post.slug} />
 
               <div className="mt-4">
                 <Link

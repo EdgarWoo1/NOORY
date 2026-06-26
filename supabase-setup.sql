@@ -54,8 +54,31 @@ drop policy if exists "_TdaContact read"   on public."_TdaContact";
 create policy "_TdaContact insert" on public."_TdaContact" for insert with check (true);
 create policy "_TdaContact read"   on public."_TdaContact" for select to authenticated using (true);
 
+-- ---------- 3) 댓글 테이블 _TdaComment ----------
+create table if not exists public."_TdaComment" (
+  "No"        bigint generated always as identity primary key,
+  "PostSlug"  text not null,
+  "Name"      text not null,
+  "Body"      text not null,
+  "CreatedAt" timestamptz not null default now()
+);
+
+create index if not exists "_TdaComment_PostSlug_idx" on public."_TdaComment" ("PostSlug");
+
+alter table public."_TdaComment" enable row level security;
+
+drop policy if exists "_TdaComment read"   on public."_TdaComment";
+drop policy if exists "_TdaComment insert" on public."_TdaComment";
+drop policy if exists "_TdaComment delete" on public."_TdaComment";
+
+-- 읽기/등록: 누구나 / 삭제: 로그인한 관리자만
+create policy "_TdaComment read"   on public."_TdaComment" for select using (true);
+create policy "_TdaComment insert" on public."_TdaComment" for insert with check (true);
+create policy "_TdaComment delete" on public."_TdaComment" for delete to authenticated using (true);
+
+
 -- ============================================================
---  3) 관리자 계정 만들기 (SQL 아님 — 대시보드에서)
+--  4) 관리자 계정 만들기 (SQL 아님 — 대시보드에서)
 --     Authentication → Users → Add user → 이메일/비밀번호 입력,
 --     "Auto Confirm User" 체크 후 저장.
 --  4) 외부 가입 차단
