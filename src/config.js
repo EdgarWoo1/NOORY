@@ -9,8 +9,8 @@
 // ============================================================
 
 export const supabaseConfig = {
-  supabaseUrl: '',
-  supabaseAnonKey: '',
+  supabaseUrl: 'https://pfrthfieouyqacsjkbvd.supabase.co',
+  supabaseAnonKey: 'sb_publishable_9OVRl7UVAvAnhcz3NeFXHg_EZP0v52l',
 }
 
 export function isSupabaseConfigured() {
