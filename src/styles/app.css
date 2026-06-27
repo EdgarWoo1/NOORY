@@ -1,19 +1,22 @@
 /* 누리일주 React 앱 추가 스타일 (원본 Bootstrap 테마 위에 얹는 보정) */
 
-/* ---------- 글꼴 통일 ----------
-   영문은 Poppins, 한글은 Noto Sans KR로 모든 요소에서 동일하게 렌더링.
-   버튼/입력창/제목이 따로 시스템 글꼴로 대체되던 문제를 해결한다. */
-body,
-h1, h2, h3, h4, h5, h6,
-p, a, span, div, li,
-.btn,
-button,
+/* ---------- 글꼴 ----------
+   원본 테마는 제목/본문/버튼/링크에 '나눔명조(Nanum Myeongjo)'를 적용해
+   우아한 느낌을 냈다(noory.css에 해당 규칙 존재). 그 타이포그래피를 유지하고,
+   새로 추가한 폼 요소(입력창/셀렉트/검색 등)도 같은 글꼴로 통일한다. */
+body {
+  font-family: 'Poppins', 'Nanum Myeongjo', sans-serif;
+}
+
 input,
 textarea,
 select,
-.navbar-brand,
-.display-1, .display-2, .display-3, .display-4 {
-  font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+.form-control,
+.btn,
+button,
+a,
+.page-link {
+  font-family: 'Nanum Myeongjo', serif;
 }
 
 
