@@ -41,6 +41,9 @@ export default function Layout({ children }) {
             </div>
             <div className="col-lg-6 text-center text-lg-right">
               <div className="d-inline-flex align-items-center">
+                <Link className="text-primary pl-3" to="/search" title="검색">
+                  <i className="fa fa-search"></i>
+                </Link>
                 <a className="text-primary pl-3" href={YOUTUBE} target="_blank" rel="noreferrer">
                   <i className="fab fa-youtube"></i>
                 </a>
@@ -85,30 +88,19 @@ export default function Layout({ children }) {
                 <NavLink to="/diary" className="nav-item nav-link" onClick={closeMenu}>
                   일기
                 </NavLink>
-                <NavLink to="/search" className="nav-item nav-link" onClick={closeMenu}>
-                  <i className="fa fa-search mr-1"></i>검색
-                </NavLink>
                 {isAuthed && (
                   <NavLink to="/write" className="nav-item nav-link" onClick={closeMenu}>
                     글쓰기
                   </NavLink>
                 )}
-                {isAuthed ? (
-                  <button
-                    type="button"
-                    className="nav-item nav-link btn btn-link p-0 px-lg-2 text-left"
-                    onClick={() => {
-                      closeMenu()
-                      handleLogout()
-                    }}
-                  >
-                    로그아웃
-                  </button>
-                ) : (
-                  <NavLink to="/login" className="nav-item nav-link" onClick={closeMenu}>
-                    로그인
-                  </NavLink>
-                )}
+                {/* 검색: 모바일에서만 메뉴에 노출 (데스크톱은 상단바에 있음) */}
+                <NavLink
+                  to="/search"
+                  className="nav-item nav-link d-lg-none"
+                  onClick={closeMenu}
+                >
+                  <i className="fa fa-search mr-1"></i>검색
+                </NavLink>
               </div>
             </div>
           </nav>
@@ -159,7 +151,31 @@ export default function Layout({ children }) {
               </Link>
             </div>
           </div>
-          <div className="col-lg-3 col-md-6 mb-5"></div>
+          <div className="col-lg-3 col-md-6 mb-5">
+            <h5 className="text-white text-uppercase mb-4" style={{ letterSpacing: 5 }}>
+              관리자
+            </h5>
+            <div className="d-flex flex-column justify-content-start align-items-start">
+              {isAuthed ? (
+                <>
+                  <Link className="text-white-50 mb-2" to="/write">
+                    <i className="fa fa-angle-right mr-2"></i>글쓰기
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn btn-link text-white-50 p-0"
+                    onClick={handleLogout}
+                  >
+                    <i className="fa fa-angle-right mr-2"></i>로그아웃
+                  </button>
+                </>
+              ) : (
+                <Link className="text-white-50" to="/login">
+                  <i className="fa fa-angle-right mr-2"></i>로그인
+                </Link>
+              )}
+            </div>
+          </div>
           <div className="col-lg-3 col-md-6 mb-5">
             <h5 className="text-white text-uppercase mb-4" style={{ letterSpacing: 5 }}>
               Contact Us
