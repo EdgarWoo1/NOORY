@@ -1,5 +1,22 @@
 /* 누리일주 React 앱 추가 스타일 (원본 Bootstrap 테마 위에 얹는 보정) */
 
+/* ---------- 글꼴 통일 ----------
+   영문은 Poppins, 한글은 Noto Sans KR로 모든 요소에서 동일하게 렌더링.
+   버튼/입력창/제목이 따로 시스템 글꼴로 대체되던 문제를 해결한다. */
+body,
+h1, h2, h3, h4, h5, h6,
+p, a, span, div, li,
+.btn,
+button,
+input,
+textarea,
+select,
+.navbar-brand,
+.display-1, .display-2, .display-3, .display-4 {
+  font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+}
+
+
 /* 홈 히어로 (원본 carousel 대체) */
 .hero-banner {
   min-height: 480px;
