@@ -111,87 +111,90 @@ export default function Layout({ children }) {
       <main>{children}</main>
 
       {/* Footer */}
-      <div
-        className="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5"
-        style={{ marginTop: 90 }}
-      >
-        <div className="row pt-5">
-          <div className="col-lg-3 col-md-6 mb-5">
-            <Link to="/" className="navbar-brand">
-              <h1 className="text-primary">
-                <span className="text-white">NOORY</span>
-              </h1>
-            </Link>
-            <p>세계일주를 꿈꾸는 20대 청년의 이야기입니다.</p>
-            <h6
-              className="text-white text-uppercase mt-4 mb-3"
-              style={{ letterSpacing: 5 }}
-            >
-              Follow Us
-            </h6>
-            <div className="d-flex justify-content-start">
-              <a className="btn btn-outline-primary btn-square" href={YOUTUBE} target="_blank" rel="noreferrer">
+      <footer className="footer bg-dark text-white-50 mt-5">
+        <div className="container pt-5 pb-4">
+          <div className="row">
+            {/* Brand */}
+            <div className="col-md-5 mb-4 mb-md-0">
+              <Link to="/" className="navbar-brand d-inline-block mb-2">
+                <h1 className="text-primary m-0">
+                  <span className="text-white">NOORY</span>
+                </h1>
+              </Link>
+              <p className="mb-3">세계일주를 꿈꾸는 20대 청년의 이야기.</p>
+              <a
+                className="btn btn-outline-primary btn-square"
+                href={YOUTUBE}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="유튜브"
+              >
                 <i className="fab fa-youtube"></i>
               </a>
             </div>
-          </div>
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h5 className="text-white text-uppercase mb-4" style={{ letterSpacing: 5 }}>
-              메뉴
-            </h5>
-            <div className="d-flex flex-column justify-content-start">
-              <Link className="text-white-50 mb-2" to="/travel">
-                <i className="fa fa-angle-right mr-2"></i>여행기
-              </Link>
-              <Link className="text-white-50 mb-2" to="/diary">
-                <i className="fa fa-angle-right mr-2"></i>일기
-              </Link>
-              <Link className="text-white-50 mb-2" to="/search">
-                <i className="fa fa-angle-right mr-2"></i>검색
-              </Link>
+
+            {/* 메뉴 */}
+            <div className="col-6 col-md-3 mb-4 mb-md-0">
+              <h6 className="text-white text-uppercase mb-3" style={{ letterSpacing: 3 }}>
+                메뉴
+              </h6>
+              <div className="d-flex flex-column">
+                <Link className="footer-link mb-2" to="/travel">
+                  여행기
+                </Link>
+                <Link className="footer-link mb-2" to="/diary">
+                  일기
+                </Link>
+                <Link className="footer-link mb-2" to="/search">
+                  검색
+                </Link>
+                <Link className="footer-link" to="/contact">
+                  문의하기
+                </Link>
+              </div>
+            </div>
+
+            {/* Contact */}
+            <div className="col-6 col-md-4">
+              <h6 className="text-white text-uppercase mb-3" style={{ letterSpacing: 3 }}>
+                Contact
+              </h6>
+              <p className="mb-2">
+                <i className="fa fa-envelope mr-2"></i>wsh130@naver.com
+              </p>
+              <p className="mb-0">
+                <i className="fa fa-map-marker-alt mr-2"></i>서울특별시
+              </p>
             </div>
           </div>
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h5 className="text-white text-uppercase mb-4" style={{ letterSpacing: 5 }}>
-              관리자
-            </h5>
-            <div className="d-flex flex-column justify-content-start align-items-start">
+
+          {/* 하단 바: 저작권 + 관리자(구석) */}
+          <div className="footer-bottom d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 pt-3">
+            <small>© {new Date().getFullYear()} NOORY · 누리일주</small>
+            <small>
               {isAuthed ? (
                 <>
-                  <Link className="text-white-50 mb-2" to="/write">
-                    <i className="fa fa-angle-right mr-2"></i>글쓰기
+                  <Link className="footer-link" to="/write">
+                    글쓰기
                   </Link>
+                  <span className="px-2">·</span>
                   <button
                     type="button"
-                    className="btn btn-link text-white-50 p-0"
+                    className="btn btn-link footer-link p-0 align-baseline"
                     onClick={handleLogout}
                   >
-                    <i className="fa fa-angle-right mr-2"></i>로그아웃
+                    로그아웃
                   </button>
                 </>
               ) : (
-                <Link className="text-white-50" to="/login">
-                  <i className="fa fa-angle-right mr-2"></i>로그인
+                <Link className="footer-link" to="/login">
+                  관리자 로그인
                 </Link>
               )}
-            </div>
-          </div>
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h5 className="text-white text-uppercase mb-4" style={{ letterSpacing: 5 }}>
-              Contact Us
-            </h5>
-            <p>
-              <i className="fa fa-map-marker-alt mr-2"></i>서울특별시
-            </p>
-            <p>
-              <i className="fa fa-envelope mr-2"></i>wsh130@naver.com
-            </p>
-            <Link to="/contact" className="btn btn-primary mt-2">
-              문의하기
-            </Link>
+            </small>
           </div>
         </div>
-      </div>
+      </footer>
 
       {/* Back to top */}
       {showTop && (
