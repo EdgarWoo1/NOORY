@@ -65,14 +65,24 @@ export default function Layout({ children }) {
                 <span className="text-dark">NOORY</span>
               </h1>
             </Link>
-            <button
-              type="button"
-              className="navbar-toggler"
-              onClick={() => setOpen((o) => !o)}
-              aria-label="메뉴"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+            <div className="d-flex align-items-center d-lg-none ml-auto">
+              <Link
+                to="/search"
+                className="text-primary mr-3"
+                title="검색"
+                onClick={closeMenu}
+              >
+                <i className="fa fa-search" style={{ fontSize: '1.2rem' }}></i>
+              </Link>
+              <button
+                type="button"
+                className="navbar-toggler"
+                onClick={() => setOpen((o) => !o)}
+                aria-label="메뉴"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+            </div>
             <div
               className={`collapse navbar-collapse justify-content-between px-3${
                 open ? ' show' : ''
@@ -93,14 +103,6 @@ export default function Layout({ children }) {
                     글쓰기
                   </NavLink>
                 )}
-                {/* 검색: 모바일에서만 메뉴에 노출 (데스크톱은 상단바에 있음) */}
-                <NavLink
-                  to="/search"
-                  className="nav-item nav-link d-lg-none"
-                  onClick={closeMenu}
-                >
-                  <i className="fa fa-search mr-1"></i>검색
-                </NavLink>
               </div>
             </div>
           </nav>
@@ -116,21 +118,23 @@ export default function Layout({ children }) {
           <div className="row">
             {/* Brand */}
             <div className="col-md-5 mb-4 mb-md-0">
-              <Link to="/" className="navbar-brand d-inline-block mb-2">
-                <h1 className="text-primary m-0">
-                  <span className="text-white">NOORY</span>
-                </h1>
-              </Link>
-              <p className="mb-3">세계일주를 꿈꾸는 20대 청년의 이야기.</p>
-              <a
-                className="btn btn-outline-primary btn-square"
-                href={YOUTUBE}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="유튜브"
-              >
-                <i className="fab fa-youtube"></i>
-              </a>
+              <div className="d-flex align-items-center mb-2" style={{ gap: 14 }}>
+                <Link to="/" className="navbar-brand m-0 d-inline-block">
+                  <h1 className="text-primary m-0">
+                    <span className="text-white">NOORY</span>
+                  </h1>
+                </Link>
+                <a
+                  className="btn btn-outline-primary btn-square"
+                  href={YOUTUBE}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="유튜브"
+                >
+                  <i className="fab fa-youtube"></i>
+                </a>
+              </div>
+              <p className="mb-0">세계일주를 꿈꾸는 20대 청년의 이야기.</p>
             </div>
 
             {/* 메뉴 */}
