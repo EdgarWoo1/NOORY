@@ -13,7 +13,7 @@ export default function PostCard({ post }) {
             className="img-fluid w-100"
             src={post.thumb || DEFAULT_THUMB}
             alt=""
-            style={{ cursor: 'pointer', aspectRatio: '4 / 3', objectFit: 'cover' }}
+            style={{ cursor: 'pointer' }}
             onError={(e) => {
               e.currentTarget.src = DEFAULT_THUMB
             }}
