@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createPost, getBySlug, updatePost } from '../lib/postsApi'
 import { CATEGORIES } from '../data/posts'
+import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 
 function makeSlug(title) {
@@ -18,6 +19,7 @@ export default function Write() {
   const { slug } = useParams()
   const editing = Boolean(slug)
   const navigate = useNavigate()
+  useSeo({ title: editing ? '글 수정' : '글쓰기' })
 
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState(CATEGORIES[1]) // 기본: 일기

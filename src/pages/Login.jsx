@@ -3,9 +3,11 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { isSupabaseConfigured } from '../config'
 import { useAuth } from '../auth'
+import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 
 export default function Login() {
+  useSeo({ title: '관리자 로그인' })
   const navigate = useNavigate()
   const location = useLocation()
   const { isAuthed } = useAuth()

@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { supabase } from '../supabase'
 import { isSupabaseConfigured } from '../config'
 import PageHeader from '../components/PageHeader'
+import { useSeo } from '../lib/seo'
 
 const ADMIN_EMAIL = 'wsh130@naver.com'
 
 export default function Contact() {
+  useSeo({ title: '문의하기', description: '누리일주에 궁금한 점을 남겨 주세요.' })
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')

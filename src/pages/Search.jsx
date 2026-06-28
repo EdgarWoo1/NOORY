@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { listAll } from '../lib/postsApi'
 import { getCommentCounts } from '../lib/commentsApi'
+import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 import PostCard from '../components/PostCard'
 
 export default function Search() {
+  useSeo({ title: '검색', description: '누리일주의 여행기와 독후감을 검색하세요.' })
   const [all, setAll] = useState([])
   const [counts, setCounts] = useState({})
   const [loading, setLoading] = useState(true)

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getBySlug, deletePost } from '../lib/postsApi'
 import { useAuth } from '../auth'
+import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 import Comments from '../components/Comments'
 
@@ -26,6 +27,13 @@ export default function PostDetail() {
       active = false
     }
   }, [slug])
+
+  useSeo({
+    title: post?.title,
+    description: (post?.text || post?.body || '').slice(0, 160),
+    image: post?.thumb,
+    type: 'article',
+  })
 
   async function handleDelete() {
     if (!window.confirm('이 글을 정말 삭제할까요? 되돌릴 수 없어요.')) return
