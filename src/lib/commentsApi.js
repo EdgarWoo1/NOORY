@@ -34,6 +34,21 @@ export async function listComments(postSlug) {
   return data.map(normalize)
 }
 
+// 글별 댓글 개수 맵 { slug: count } 을 한 번에 가져온다.
+export async function getCommentCounts() {
+  if (!commentsEnabled()) return {}
+  const { data, error } = await supabase.from(TABLE).select('PostSlug')
+  if (error || !data) {
+    console.warn('댓글 개수를 불러오지 못했습니다.', error)
+    return {}
+  }
+  const map = {}
+  for (const r of data) {
+    map[r.PostSlug] = (map[r.PostSlug] || 0) + 1
+  }
+  return map
+}
+
 export async function addComment(postSlug, name, body) {
   if (!commentsEnabled()) throw new Error('댓글 기능이 설정되어 있지 않아요.')
   const { error } = await supabase.from(TABLE).insert({

@@ -1,18 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import { listAll } from '../lib/postsApi'
+import { getCommentCounts } from '../lib/commentsApi'
 import PageHeader from '../components/PageHeader'
 import PostCard from '../components/PostCard'
 
 export default function Search() {
   const [all, setAll] = useState([])
+  const [counts, setCounts] = useState({})
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
 
   useEffect(() => {
     let active = true
-    listAll().then((data) => {
+    Promise.all([listAll(), getCommentCounts()]).then(([data, c]) => {
       if (!active) return
       setAll(data)
+      setCounts(c)
       setLoading(false)
     })
     return () => {
@@ -74,7 +77,7 @@ export default function Search() {
               <div className="row pb-3">
                 {results.map((post) => (
                   <div key={post.slug} className="col-lg-4 col-md-6 mb-4 pb-2">
-                    <PostCard post={post} />
+                    <PostCard post={post} count={counts[post.slug] || 0} />
                   </div>
                 ))}
               </div>

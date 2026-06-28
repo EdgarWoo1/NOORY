@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { dateBadge, DEFAULT_THUMB } from '../data/posts'
 
 // 목록/홈에 쓰이는 글 카드 (원본 .blog-item 구조).
-export default function PostCard({ post }) {
+export default function PostCard({ post, count = 0 }) {
   const to = `/post/${encodeURIComponent(post.slug)}`
   const badge = dateBadge(post)
   return (
@@ -25,6 +25,10 @@ export default function PostCard({ post }) {
             <small className="text-white text-uppercase">{post.category}</small>
           </div>
         )}
+        <span className="comment-badge" title={`댓글 ${count}개`}>
+          <i className="fa fa-comment mr-1"></i>
+          {count}
+        </span>
       </div>
       <div className="bg-white p-4">
         <div className="d-flex mb-2">

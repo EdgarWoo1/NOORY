@@ -68,6 +68,19 @@ a,
   word-break: keep-all;
 }
 
+/* ---------- 카드 댓글 개수 배지 ---------- */
+.comment-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
 /* ---------- 푸터 ---------- */
 .footer .footer-link {
   color: rgba(255, 255, 255, 0.55);

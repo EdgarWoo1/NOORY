@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { listByCategory } from '../lib/postsApi'
+import { getCommentCounts } from '../lib/commentsApi'
 import PageHeader from '../components/PageHeader'
 import PostCard from '../components/PostCard'
 
@@ -7,6 +8,7 @@ const PER_PAGE = 8
 
 export default function List({ category }) {
   const [posts, setPosts] = useState([])
+  const [counts, setCounts] = useState({})
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
 
@@ -14,11 +16,14 @@ export default function List({ category }) {
     let active = true
     setLoading(true)
     setPage(1)
-    listByCategory(category).then((data) => {
-      if (!active) return
-      setPosts(data)
-      setLoading(false)
-    })
+    Promise.all([listByCategory(category), getCommentCounts()]).then(
+      ([data, c]) => {
+        if (!active) return
+        setPosts(data)
+        setCounts(c)
+        setLoading(false)
+      },
+    )
     return () => {
       active = false
     }
@@ -44,7 +49,7 @@ export default function List({ category }) {
               <div className="row pb-3">
                 {pageItems.map((post) => (
                   <div key={post.slug} className="col-lg-4 col-md-6 mb-4 pb-2">
-                    <PostCard post={post} />
+                    <PostCard post={post} count={counts[post.slug] || 0} />
                   </div>
                 ))}
               </div>

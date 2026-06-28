@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { listAll } from '../lib/postsApi'
+import { getCommentCounts } from '../lib/commentsApi'
 import PostCard from '../components/PostCard'
 
 export default function Home() {
   const [posts, setPosts] = useState([])
+  const [counts, setCounts] = useState({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let active = true
-    listAll().then((data) => {
+    Promise.all([listAll(), getCommentCounts()]).then(([data, c]) => {
       if (!active) return
       setPosts(data.slice(0, 6))
+      setCounts(c)
       setLoading(false)
     })
     return () => {
@@ -51,7 +54,7 @@ export default function Home() {
             <div className="row pb-3">
               {posts.map((post) => (
                 <div key={post.slug} className="col-lg-4 col-md-6 mb-4 pb-2">
-                  <PostCard post={post} />
+                  <PostCard post={post} count={counts[post.slug] || 0} />
                 </div>
               ))}
             </div>
