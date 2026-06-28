@@ -13,7 +13,7 @@ export default function PageHeader({ title, crumb }) {
           <div className="d-inline-flex text-white">
             <p className="m-0 text-uppercase">
               <Link className="text-white" to="/">
-                홈 바로가기
+                홈
               </Link>
             </p>
             <i className="fa fa-angle-double-right pt-1 px-3"></i>

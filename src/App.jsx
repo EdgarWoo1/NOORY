@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
-import Home from './pages/Home'
 import List from './pages/List'
 import PostDetail from './pages/PostDetail'
 import Search from './pages/Search'
@@ -22,7 +21,7 @@ export default function App() {
     <Layout>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<List category="일기" />} />
         <Route path="/travel" element={<List category="여행기" />} />
         <Route path="/diary" element={<List category="일기" />} />
         <Route path="/post/:slug" element={<PostDetail />} />

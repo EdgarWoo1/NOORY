@@ -90,13 +90,10 @@ export default function Layout({ children }) {
             >
               <div className="navbar-nav ml-auto py-0 align-items-lg-center">
                 <NavLink to="/" end className="nav-item nav-link" onClick={closeMenu}>
-                  홈 바로가기
+                  일기
                 </NavLink>
                 <NavLink to="/travel" className="nav-item nav-link" onClick={closeMenu}>
                   여행기
-                </NavLink>
-                <NavLink to="/diary" className="nav-item nav-link" onClick={closeMenu}>
-                  일기
                 </NavLink>
                 {isAuthed && (
                   <NavLink to="/write" className="nav-item nav-link" onClick={closeMenu}>
