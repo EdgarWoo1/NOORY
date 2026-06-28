@@ -81,6 +81,23 @@ a,
   line-height: 1.6;
 }
 
+/* ---------- 페이지네이션 (모바일 넘침 방지) ---------- */
+.pagination {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.pagination .page-link {
+  min-width: 40px;
+  text-align: center;
+}
+@media (max-width: 480px) {
+  .pagination .page-link {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    min-width: 34px;
+  }
+}
+
 /* ---------- 푸터 ---------- */
 .footer .footer-link {
   color: rgba(255, 255, 255, 0.55);

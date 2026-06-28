@@ -7,6 +7,15 @@ import PostCard from '../components/PostCard'
 
 const PER_PAGE = 8
 
+// 현재 페이지 주변만 보여 주는 윈도우 (모바일 화면 넘침 방지)
+function pageWindow(page, total, span = 2) {
+  const start = Math.max(1, page - span)
+  const end = Math.min(total, page + span)
+  const arr = []
+  for (let i = start; i <= end; i++) arr.push(i)
+  return arr
+}
+
 const CATEGORY_DESC = {
   일기: '책을 읽고 남긴 독후감과 일상의 생각들을 모았습니다.',
   여행기: '세계 곳곳을 여행하며 남긴 기록과 사진들을 모았습니다.',
@@ -68,7 +77,7 @@ export default function List({ category }) {
               {totalPages > 1 && (
                 <div className="col-12">
                   <nav aria-label="페이지">
-                    <ul className="pagination pagination-lg justify-content-center bg-white mb-0">
+                    <ul className="pagination justify-content-center flex-wrap mb-0">
                       <li className={`page-item${page === 1 ? ' disabled' : ''}`}>
                         <button
                           className="page-link"
@@ -77,7 +86,7 @@ export default function List({ category }) {
                           이전
                         </button>
                       </li>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                      {pageWindow(page, totalPages).map((n) => (
                         <li key={n} className={`page-item${n === page ? ' active' : ''}`}>
                           <button className="page-link" onClick={() => setPage(n)}>
                             {n}
@@ -95,6 +104,9 @@ export default function List({ category }) {
                         </button>
                       </li>
                     </ul>
+                    <p className="text-center text-muted mt-2 mb-0" style={{ fontSize: '0.85rem' }}>
+                      {page} / {totalPages}
+                    </p>
                   </nav>
                 </div>
               )}
