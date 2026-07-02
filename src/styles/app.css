@@ -81,20 +81,27 @@ a,
   line-height: 1.6;
 }
 
-/* ---------- 페이지네이션 (모바일 넘침 방지) ---------- */
+/* ---------- 페이지네이션 (버튼 크게 + 모바일 넘침 방지) ---------- */
 .pagination {
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
 }
 .pagination .page-link {
-  min-width: 40px;
+  min-width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  font-size: 1.05rem;
   text-align: center;
 }
 @media (max-width: 480px) {
   .pagination .page-link {
-    padding: 6px 10px;
-    font-size: 0.9rem;
-    min-width: 34px;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 10px;
+    font-size: 0.95rem;
   }
 }
 
@@ -122,4 +129,33 @@ a,
 }
 .navbar .nav-link.btn-link:hover {
   text-decoration: none;
+}
+
+/* ---------- 모바일 상단 아이콘 버튼(돋보기 · 메뉴) 통일 ---------- */
+.nav-icon-group {
+  gap: 8px;
+}
+.nav-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #7ab730;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.nav-icon-btn:hover,
+.nav-icon-btn:focus {
+  color: #5e8f22;
+  text-decoration: none;
+  outline: none;
+}
+.nav-icon-btn .fa {
+  display: block;
 }

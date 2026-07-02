@@ -65,22 +65,24 @@ export default function Layout({ children }) {
                 <span className="text-dark">NOORY</span>
               </h1>
             </Link>
-            <div className="d-flex align-items-center d-lg-none ml-auto">
+            <div className="d-flex align-items-center d-lg-none ml-auto nav-icon-group">
               <Link
                 to="/search"
-                className="text-primary mr-3"
+                className="nav-icon-btn"
                 title="검색"
+                aria-label="검색"
                 onClick={closeMenu}
               >
-                <i className="fa fa-search" style={{ fontSize: '1.2rem' }}></i>
+                <i className="fa fa-search"></i>
               </Link>
               <button
                 type="button"
-                className="navbar-toggler"
+                className="nav-icon-btn"
                 onClick={() => setOpen((o) => !o)}
                 aria-label="메뉴"
+                aria-expanded={open}
               >
-                <span className="navbar-toggler-icon"></span>
+                <i className={`fa ${open ? 'fa-times' : 'fa-bars'}`}></i>
               </button>
             </div>
             <div
