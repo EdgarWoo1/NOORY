@@ -32,16 +32,26 @@ const PINNED_SLUGS = [
   'etc_56_구토',
 ]
 
-// 고정 작품을 우선순위 순서로 앞에 배치하고, 나머지는 기존(날짜) 순서를 유지한다.
+// 날짜와 무관하게 항상 목록 맨 뒤(마지막 페이지)로 보낼 글.
+// 최근 글이지만 뒤쪽에 두고 싶은 경우(예: 추천 리스트)에 사용한다.
+const PINNED_LAST_SLUGS = ['etc_58_2026클로드추천리스트']
+
+// 상단 고정 작품은 우선순위 순서로 앞에, 하단 고정 글은 맨 뒤에 배치하고,
+// 나머지는 기존(날짜) 순서를 유지한다.
 // slug 한글이 NFC/NFD로 섞일 수 있어 비교 시 양쪽을 NFC로 정규화한다.
 function pinFeatured(posts, category) {
   if (category !== '일기') return posts
-  const rank = new Map(PINNED_SLUGS.map((slug, i) => [slug.normalize('NFC'), i]))
+  const topRank = new Map(PINNED_SLUGS.map((slug, i) => [slug.normalize('NFC'), i]))
+  const lastRank = new Map(PINNED_LAST_SLUGS.map((slug, i) => [slug.normalize('NFC'), i]))
+  const NORMAL = 1_000_000
+  const LAST_BASE = 2_000_000
   const rankOf = (p) => {
-    const r = rank.get((p.slug || '').normalize('NFC'))
-    return r === undefined ? Infinity : r
+    const slug = (p.slug || '').normalize('NFC')
+    if (topRank.has(slug)) return topRank.get(slug)
+    if (lastRank.has(slug)) return LAST_BASE + lastRank.get(slug)
+    return NORMAL
   }
-  // Array.prototype.sort는 안정 정렬이므로 동순위는 원래 순서(날짜순)가 유지된다.
+  // Array.prototype.sort는 안정 정렬이므로 동순위(NORMAL)는 원래 순서(날짜순)가 유지된다.
   return [...posts].sort((a, b) => rankOf(a) - rankOf(b))
 }
 
