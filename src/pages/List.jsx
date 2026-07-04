@@ -5,7 +5,8 @@ import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 import PostCard from '../components/PostCard'
 
-const PER_PAGE = 8
+const PER_PAGE_BY_CATEGORY = { 일기: 9 }
+const DEFAULT_PER_PAGE = 8
 
 // 현재 페이지 주변만 보여 주는 윈도우 (모바일 화면 넘침 방지)
 function pageWindow(page, total, span = 2) {
@@ -49,10 +50,11 @@ export default function List({ category }) {
     }
   }, [category])
 
-  const totalPages = Math.max(1, Math.ceil(posts.length / PER_PAGE))
+  const perPage = PER_PAGE_BY_CATEGORY[category] ?? DEFAULT_PER_PAGE
+  const totalPages = Math.max(1, Math.ceil(posts.length / perPage))
   const pageItems = useMemo(
-    () => posts.slice((page - 1) * PER_PAGE, page * PER_PAGE),
-    [posts, page],
+    () => posts.slice((page - 1) * perPage, page * perPage),
+    [posts, page, perPage],
   )
 
   return (
