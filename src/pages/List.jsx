@@ -8,6 +8,41 @@ import PostCard from '../components/PostCard'
 const PER_PAGE_BY_CATEGORY = { 일기: 9 }
 const DEFAULT_PER_PAGE = 8
 
+// 일기 목록에서 민음사 세계문학전집 수록작을 앞쪽(1~2페이지)에 고정 노출한다.
+// 배열 순서 = 노출 우선순위. 앞 11개는 세계문학전집이 확실한 작품,
+// 뒤 4개는 판본 여부가 애매하지만 우선 노출하기로 한 작품이다.
+const PINNED_SLUGS = [
+  'etc_8_네루다의 우편배달부',
+  'etc_16_미겔스트리트',
+  'etc_25_수레바퀴아래서',
+  'etc_30_올리버트위스트',
+  'etc_31_말',
+  'etc_43_달과6펜스',
+  'etc_45_면도날',
+  'etc_46_이방인',
+  'etc_51_위대한 개츠비',
+  'etc_52_그리스인조르바',
+  'etc_54_파우스트',
+  // ↓ 여기부터는 세계문학전집 판본 여부가 애매하나 우선 노출 (위 11개 뒤)
+  'etc_6_월든',
+  'etc_9_소망 없는 불행',
+  'etc_37_노르웨이의숲',
+  'etc_55_차라투스트라',
+]
+
+// 고정 작품을 우선순위 순서로 앞에 배치하고, 나머지는 기존(날짜) 순서를 유지한다.
+// slug 한글이 NFC/NFD로 섞일 수 있어 비교 시 양쪽을 NFC로 정규화한다.
+function pinFeatured(posts, category) {
+  if (category !== '일기') return posts
+  const rank = new Map(PINNED_SLUGS.map((slug, i) => [slug.normalize('NFC'), i]))
+  const rankOf = (p) => {
+    const r = rank.get((p.slug || '').normalize('NFC'))
+    return r === undefined ? Infinity : r
+  }
+  // Array.prototype.sort는 안정 정렬이므로 동순위는 원래 순서(날짜순)가 유지된다.
+  return [...posts].sort((a, b) => rankOf(a) - rankOf(b))
+}
+
 // 현재 페이지 주변만 보여 주는 윈도우 (모바일 화면 넘침 방지)
 function pageWindow(page, total, span = 2) {
   const start = Math.max(1, page - span)
@@ -40,7 +75,7 @@ export default function List({ category }) {
     Promise.all([listByCategory(category), getCommentCounts()]).then(
       ([data, c]) => {
         if (!active) return
-        setPosts(data)
+        setPosts(pinFeatured(data, category))
         setCounts(c)
         setLoading(false)
       },
