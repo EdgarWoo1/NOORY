@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
+import ErrorBoundary from './components/ErrorBoundary'
 import List from './pages/List'
 import PostDetail from './pages/PostDetail'
 import Search from './pages/Search'
@@ -17,10 +18,13 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const { pathname } = useLocation()
   return (
     <Layout>
       <ScrollToTop />
-      <Routes>
+      {/* 경로가 바뀌면 key가 달라져 boundary가 새로 마운트되며 에러 상태가 초기화된다 */}
+      <ErrorBoundary key={pathname}>
+        <Routes>
         <Route path="/" element={<List category="일기" />} />
         <Route path="/travel" element={<List category="여행기" />} />
         <Route path="/diary" element={<List category="일기" />} />
@@ -52,7 +56,8 @@ export default function App() {
             </div>
           }
         />
-      </Routes>
+        </Routes>
+      </ErrorBoundary>
     </Layout>
   )
 }
