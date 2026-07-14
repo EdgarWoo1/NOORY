@@ -13,7 +13,13 @@ import { RequireAuth } from './auth'
 // 페이지 이동 시 항상 맨 위로 스크롤
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => window.scrollTo(0, 0), [pathname])
+  // 주의: 화살표 함수의 암묵적 반환을 쓰면 window.scrollTo(...)의 반환값이
+  // effect의 cleanup으로 등록된다. 일부 브라우저에서 scrollTo가 함수가 아닌 값
+  // (예: Promise)을 돌려주면, 경로 이동 시 React가 그걸 정리 함수로 호출하다
+  // "is not a function" 오류로 앱 전체가 죽는다. 반드시 블록 본문으로 감싼다.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
   return null
 }
 
