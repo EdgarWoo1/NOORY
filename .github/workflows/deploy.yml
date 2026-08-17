@@ -1,0 +1,67 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: vercel-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel production deployment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -e
+
+          RESP=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://api.vercel.com/v13/deployments?teamId=team_TgYtWFIUCUUdY3n9QALFiCxD" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "noory",
+              "project": "prj_Gm1dwGSDmqw4bUd9rmaGXaccHRqX",
+              "target": "production",
+              "gitSource": {
+                "type": "github",
+                "org": "EdgarWoo1",
+                "repo": "NOORY",
+                "ref": "'"$GITHUB_SHA"'"
+              }
+            }')
+
+          HTTP_CODE=$(echo "$RESP" | tail -n1)
+          BODY=$(echo "$RESP" | sed '$d')
+          echo "$BODY"
+
+          if [ "$HTTP_CODE" -ge 300 ]; then
+            echo "Vercel deployment creation failed (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+
+          DEPLOY_ID=$(echo "$BODY" | python3 -c "import sys, json; print(json.load(sys.stdin)['id'])")
+          echo "Created deployment: $DEPLOY_ID"
+
+          for i in $(seq 1 60); do
+            STATE_RESP=$(curl -s "https://api.vercel.com/v13/deployments/$DEPLOY_ID?teamId=team_TgYtWFIUCUUdY3n9QALFiCxD" \
+              -H "Authorization: Bearer $VERCEL_TOKEN")
+            STATE=$(echo "$STATE_RESP" | python3 -c "import sys, json; print(json.load(sys.stdin).get('readyState','UNKNOWN'))")
+            echo "Poll $i: $STATE"
+
+            if [ "$STATE" = "READY" ]; then
+              echo "Deployment is READY."
+              exit 0
+            fi
+            if [ "$STATE" = "ERROR" ] || [ "$STATE" = "CANCELED" ]; then
+              echo "Deployment ended in state: $STATE"
+              exit 1
+            fi
+            sleep 10
+          done
+
+          echo "Timed out waiting for deployment to become READY."
+          exit 1
