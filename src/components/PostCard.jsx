@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { DEFAULT_THUMB } from '../data/posts'
 
 // 날짜(ISO 또는 dateLabel) → { day, ym } 로 분해
@@ -18,10 +18,13 @@ function badgeParts(post) {
 export default function PostCard({ post, count = 0 }) {
   const to = `/post/${encodeURIComponent(post.slug)}`
   const badge = badgeParts(post)
+  // 상세글의 '← 목록으로'가 보고 있던 페이지(?page=3)로 돌아올 수 있게 현재 위치를 넘긴다.
+  const location = useLocation()
+  const from = `${location.pathname}${location.search}`
   return (
     <div className="blog-item">
       <div className="position-relative">
-        <Link to={to}>
+        <Link to={to} state={{ from }}>
           <img
             className="img-fluid w-100"
             src={post.thumb || DEFAULT_THUMB}
@@ -49,7 +52,7 @@ export default function PostCard({ post, count = 0 }) {
           <span className="text-primary px-2">|</span>
           <span className="text-primary text-uppercase">{post.tag || post.category}</span>
         </div>
-        <Link className="h5 m-0 text-decoration-none d-block" to={to}>
+        <Link className="h5 m-0 text-decoration-none d-block" to={to} state={{ from }}>
           {post.title}
         </Link>
       </div>

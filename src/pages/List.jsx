@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { listByCategory } from '../lib/postsApi'
 import { getCommentCounts } from '../lib/commentsApi'
 import { useSeo } from '../lib/seo'
@@ -78,12 +79,13 @@ export default function List({ category }) {
   const [posts, setPosts] = useState([])
   const [counts, setCounts] = useState({})
   const [loading, setLoading] = useState(true)
-  const [page, setPage] = useState(1)
+  // 현재 페이지는 URL 쿼리(?page=3)에 둔다. 컴포넌트 state로 두면 글 상세로 갔다가
+  // 뒤로가기로 돌아왔을 때 마운트가 새로 되며 1페이지로 초기화된다.
+  const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     let active = true
     setLoading(true)
-    setPage(1)
     Promise.all([listByCategory(category), getCommentCounts()]).then(
       ([data, c]) => {
         if (!active) return
@@ -99,10 +101,25 @@ export default function List({ category }) {
 
   const perPage = PER_PAGE_BY_CATEGORY[category] ?? DEFAULT_PER_PAGE
   const totalPages = Math.max(1, Math.ceil(posts.length / perPage))
+  // 로딩 중에는 posts가 비어 totalPages가 1이므로 그때는 클램프하지 않는다.
+  const parsed = Math.floor(Number(searchParams.get('page')))
+  const rawPage = Number.isFinite(parsed) && parsed > 0 ? parsed : 1
+  const page = loading ? rawPage : Math.min(rawPage, totalPages)
   const pageItems = useMemo(
     () => posts.slice((page - 1) * perPage, page * perPage),
     [posts, page, perPage],
   )
+
+  // 페이지 이동은 history를 쌓지 않고 현재 항목을 교체한다. 그래야 상세글에서
+  // 뒤로가기 한 번에 보고 있던 페이지의 목록으로 돌아온다.
+  const goPage = (n) => {
+    const next = Math.min(Math.max(1, n), totalPages)
+    const params = new URLSearchParams(searchParams)
+    if (next === 1) params.delete('page')
+    else params.set('page', String(next))
+    setSearchParams(params, { replace: true })
+    window.scrollTo(0, 0)
+  }
 
   return (
     <>
@@ -130,14 +147,14 @@ export default function List({ category }) {
                       <li className={`page-item${page === 1 ? ' disabled' : ''}`}>
                         <button
                           className="page-link"
-                          onClick={() => setPage((p) => Math.max(1, p - 1))}
+                          onClick={() => goPage(page - 1)}
                         >
                           이전
                         </button>
                       </li>
                       {pageWindow(page, totalPages).map((n) => (
                         <li key={n} className={`page-item${n === page ? ' active' : ''}`}>
-                          <button className="page-link" onClick={() => setPage(n)}>
+                          <button className="page-link" onClick={() => goPage(n)}>
                             {n}
                           </button>
                         </li>
@@ -147,7 +164,7 @@ export default function List({ category }) {
                       >
                         <button
                           className="page-link"
-                          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                          onClick={() => goPage(page + 1)}
                         >
                           다음
                         </button>

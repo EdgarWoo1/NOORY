@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getBySlug, deletePost } from '../lib/postsApi'
 import { useAuth } from '../auth'
 import { useSeo } from '../lib/seo'
@@ -9,7 +9,16 @@ import Comments from '../components/Comments'
 export default function PostDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const { isAuthed } = useAuth()
+
+  // 목록 카드에서 들어온 경우 그 목록 URL(?page=3 포함)로 돌아간다.
+  // 직접 링크로 들어왔거나 다른 경로에서 왔으면 카테고리 목록 첫 페이지로.
+  const listUrl = (category) => {
+    const from = location.state?.from
+    if (typeof from === 'string' && /^\/(diary|travel)?(\?|$)/.test(from)) return from
+    return category === '여행기' ? '/travel' : '/diary'
+  }
 
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -40,7 +49,7 @@ export default function PostDetail() {
     setDeleting(true)
     try {
       await deletePost(slug)
-      navigate(post.category === '여행기' ? '/travel' : '/diary')
+      navigate(listUrl(post.category))
     } catch (err) {
       window.alert('삭제에 실패했어요: ' + err.message)
       setDeleting(false)
@@ -142,7 +151,7 @@ export default function PostDetail() {
 
               <div className="mt-4">
                 <Link
-                  to={post.category === '여행기' ? '/travel' : '/diary'}
+                  to={listUrl(post.category)}
                   className="btn btn-link pl-0"
                 >
                   ← 목록으로
