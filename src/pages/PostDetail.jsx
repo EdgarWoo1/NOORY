@@ -6,6 +6,8 @@ import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 import Comments from '../components/Comments'
 
+const CATEGORY_PATH = { 여행기: '/travel', 에세이: '/essay', 일기: '/diary' }
+
 export default function PostDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
@@ -16,8 +18,8 @@ export default function PostDetail() {
   // 직접 링크로 들어왔거나 다른 경로에서 왔으면 카테고리 목록 첫 페이지로.
   const listUrl = (category) => {
     const from = location.state?.from
-    if (typeof from === 'string' && /^\/(diary|travel)?(\?|$)/.test(from)) return from
-    return category === '여행기' ? '/travel' : '/diary'
+    if (typeof from === 'string' && /^\/(diary|travel|essay)?(\?|$)/.test(from)) return from
+    return CATEGORY_PATH[category] || '/diary'
   }
 
   const [post, setPost] = useState(null)
@@ -76,7 +78,7 @@ export default function PostDetail() {
   }
 
   const isDb = post.source === 'db'
-  const showCover = post.category === '일기' && post.thumb
+  const showCover = (post.category === '일기' || post.category === '에세이') && post.thumb
 
   return (
     <>
@@ -102,7 +104,7 @@ export default function PostDetail() {
 
               <h2 className="mb-4">{post.title}</h2>
 
-              {/* 책 표지(일기) */}
+              {/* 책 표지(일기·에세이) */}
               {showCover && (
                 <div className="text-center mb-4">
                   <img

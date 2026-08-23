@@ -34,6 +34,7 @@ export default function App() {
         <Route path="/" element={<List category="일기" />} />
         <Route path="/travel" element={<List category="여행기" />} />
         <Route path="/diary" element={<List category="일기" />} />
+        <Route path="/essay" element={<List category="에세이" />} />
         <Route path="/post/:slug" element={<PostDetail />} />
         <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<Contact />} />

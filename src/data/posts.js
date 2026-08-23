@@ -7,7 +7,8 @@ export const DEFAULT_THUMB = '/img/blog-1.jpg'
 // 정적 글: source 표시를 붙여 둔다.
 export const staticPosts = raw.map((p) => ({ ...p, source: 'static' }))
 
-export const CATEGORIES = ['여행기', '일기']
+// 주의: Write.jsx가 CATEGORIES[1]을 기본 카테고리(일기)로 쓰므로 앞 두 개의 순서는 유지한다.
+export const CATEGORIES = ['여행기', '일기', '에세이']
 
 // 날짜(ISO 또는 null) → 카드 배지에 쓸 라벨.
 export function dateBadge(post) {

@@ -68,6 +68,7 @@ function pageWindow(page, total, span = 2) {
 const CATEGORY_DESC = {
   일기: '책을 읽고 남긴 독후감과 일상의 생각들을 모았습니다.',
   여행기: '세계 곳곳을 여행하며 남긴 기록과 사진들을 모았습니다.',
+  에세이: '삶과 하루에 대해 오래 붙들고 정리한 생각들을 모았습니다.',
 }
 
 export default function List({ category }) {

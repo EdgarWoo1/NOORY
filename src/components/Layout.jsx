@@ -97,6 +97,9 @@ export default function Layout({ children }) {
                 <NavLink to="/travel" className="nav-item nav-link" onClick={closeMenu}>
                   여행기
                 </NavLink>
+                <NavLink to="/essay" className="nav-item nav-link" onClick={closeMenu}>
+                  에세이
+                </NavLink>
                 {isAuthed && (
                   <NavLink to="/write" className="nav-item nav-link" onClick={closeMenu}>
                     글쓰기
@@ -147,6 +150,9 @@ export default function Layout({ children }) {
                 </Link>
                 <Link className="footer-link mb-2" to="/diary">
                   일기
+                </Link>
+                <Link className="footer-link mb-2" to="/essay">
+                  에세이
                 </Link>
                 <Link className="footer-link mb-2" to="/search">
                   검색
