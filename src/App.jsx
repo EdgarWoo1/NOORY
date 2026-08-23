@@ -31,9 +31,9 @@ export default function App() {
       {/* 경로가 바뀌면 key가 달라져 boundary가 새로 마운트되며 에러 상태가 초기화된다 */}
       <ErrorBoundary key={pathname}>
         <Routes>
-        <Route path="/" element={<List category="일기" />} />
+        <Route path="/" element={<List category="독후감" />} />
         <Route path="/travel" element={<List category="여행기" />} />
-        <Route path="/diary" element={<List category="일기" />} />
+        <Route path="/diary" element={<List category="독후감" />} />
         <Route path="/essay" element={<List category="에세이" />} />
         <Route path="/post/:slug" element={<PostDetail />} />
         <Route path="/search" element={<Search />} />

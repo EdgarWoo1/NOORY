@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 const SITE = '누리일주'
 const DEFAULT_TITLE = '누리일주 - 세계일주를 꿈꾸는 20대 청년의 이야기'
-const DEFAULT_DESC = '세계일주를 꿈꾸는 20대 청년의 여행기·독후감·일기를 기록하는 공간.'
+const DEFAULT_DESC = '세계일주를 꿈꾸는 20대 청년의 여행기·독후감·에세이를 기록하는 공간.'
 const DEFAULT_IMAGE = '/img/carousel-1.jpg'
 
 function upsertMeta(attr, key, content) {

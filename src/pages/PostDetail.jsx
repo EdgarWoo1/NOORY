@@ -6,7 +6,7 @@ import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 import Comments from '../components/Comments'
 
-const CATEGORY_PATH = { 여행기: '/travel', 에세이: '/essay', 일기: '/diary' }
+const CATEGORY_PATH = { 여행기: '/travel', 에세이: '/essay', 독후감: '/diary' }
 
 export default function PostDetail() {
   const { slug } = useParams()
@@ -78,7 +78,7 @@ export default function PostDetail() {
   }
 
   const isDb = post.source === 'db'
-  const showCover = (post.category === '일기' || post.category === '에세이') && post.thumb
+  const showCover = (post.category === '독후감' || post.category === '에세이') && post.thumb
 
   return (
     <>
@@ -104,7 +104,7 @@ export default function PostDetail() {
 
               <h2 className="mb-4">{post.title}</h2>
 
-              {/* 책 표지(일기·에세이) */}
+              {/* 책 표지(독후감·에세이) */}
               {showCover && (
                 <div className="text-center mb-4">
                   <img

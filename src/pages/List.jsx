@@ -6,10 +6,10 @@ import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
 import PostCard from '../components/PostCard'
 
-const PER_PAGE_BY_CATEGORY = { 일기: 9 }
+const PER_PAGE_BY_CATEGORY = { 독후감: 9 }
 const DEFAULT_PER_PAGE = 8
 
-// 일기 목록에서 민음사 세계문학전집 수록작을 앞쪽(1~2페이지)에 고정 노출한다.
+// 독후감 목록에서 민음사 세계문학전집 수록작을 앞쪽(1~2페이지)에 고정 노출한다.
 // 배열 순서 = 노출 우선순위. 앞 11개는 세계문학전집이 확실한 작품,
 // 뒤 4개는 판본 여부가 애매하지만 우선 노출하기로 한 작품이다.
 const PINNED_SLUGS = [
@@ -35,14 +35,16 @@ const PINNED_SLUGS = [
 
 // 날짜와 무관하게 항상 목록 맨 뒤(마지막 페이지)로 보낼 글.
 // 최근 글이지만 뒤쪽에 두고 싶은 경우(예: 추천 리스트)에 사용한다.
+// 상단 고정(PINNED_SLUGS)과 달리 카테고리를 가리지 않고 적용한다.
 const PINNED_LAST_SLUGS = ['etc_58_2026클로드추천리스트']
 
 // 상단 고정 작품은 우선순위 순서로 앞에, 하단 고정 글은 맨 뒤에 배치하고,
 // 나머지는 기존(날짜) 순서를 유지한다.
 // slug 한글이 NFC/NFD로 섞일 수 있어 비교 시 양쪽을 NFC로 정규화한다.
 function pinFeatured(posts, category) {
-  if (category !== '일기') return posts
-  const topRank = new Map(PINNED_SLUGS.map((slug, i) => [slug.normalize('NFC'), i]))
+  // 민음사 상단 고정은 독후감 목록에서만 의미가 있다.
+  const topSlugs = category === '독후감' ? PINNED_SLUGS : []
+  const topRank = new Map(topSlugs.map((slug, i) => [slug.normalize('NFC'), i]))
   const lastRank = new Map(PINNED_LAST_SLUGS.map((slug, i) => [slug.normalize('NFC'), i]))
   const NORMAL = 1_000_000
   const LAST_BASE = 2_000_000
@@ -66,7 +68,7 @@ function pageWindow(page, total, span = 2) {
 }
 
 const CATEGORY_DESC = {
-  일기: '책을 읽고 남긴 독후감과 일상의 생각들을 모았습니다.',
+  독후감: '책을 읽고 남긴 독후감과 일상의 생각들을 모았습니다.',
   여행기: '세계 곳곳을 여행하며 남긴 기록과 사진들을 모았습니다.',
   에세이: '삶과 하루에 대해 오래 붙들고 정리한 생각들을 모았습니다.',
 }

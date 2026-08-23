@@ -92,7 +92,7 @@ export default function Layout({ children }) {
             >
               <div className="navbar-nav ml-auto py-0 align-items-lg-center">
                 <NavLink to="/" end className="nav-item nav-link" onClick={closeMenu}>
-                  일기
+                  독후감
                 </NavLink>
                 <NavLink to="/travel" className="nav-item nav-link" onClick={closeMenu}>
                   여행기
@@ -149,7 +149,7 @@ export default function Layout({ children }) {
                   여행기
                 </Link>
                 <Link className="footer-link mb-2" to="/diary">
-                  일기
+                  독후감
                 </Link>
                 <Link className="footer-link mb-2" to="/essay">
                   에세이

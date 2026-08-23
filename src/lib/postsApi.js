@@ -10,12 +10,17 @@ import { staticPosts, sortPosts, DEFAULT_THUMB } from '../data/posts'
 
 const TABLE = '_TdaPost'
 
+// '일기' 카테고리는 '독후감'으로 이름이 바뀌었다. 이전에 저장된 DB 글이
+// 어느 목록에도 안 잡히는 일을 막기 위해 읽는 시점에 옛 이름을 새 이름으로 옮긴다.
+const LEGACY_CATEGORY = { 일기: '독후감' }
+
 // DB 행(PascalCase) → 앱에서 쓰는 형태로 변환
 function normalize(row) {
+  const category = row.Category || '독후감'
   return {
     slug: row.Slug,
     title: row.Title,
-    category: row.Category || '일기',
+    category: LEGACY_CATEGORY[category] || category,
     tag: row.Tag || '',
     date: row.Date || null,
     dateLabel: '',
