@@ -766,5 +766,17 @@
   "order": 63,
   "bodyHtml": "<h4 style=\"font-family: 'Nanum Myeongjo', serif; letter-spacing: 2px;\">데일 카네기 자기관리론</h4>\n<p style=\"color: #888; font-size: 13px; margin-bottom: 24px;\">Dale Carnegie</p>\n<div style=\"border-left: 4px solid #FFE400; padding: 16px 20px; margin-bottom: 28px; background: #fafafa;\">\n<p style=\"font-family: 'Nanum Myeongjo', serif; font-size: 16px; line-height: 2; margin-bottom: 8px;\">\n이게 제대로된 삶인가? 모험이 가득한 삶을 꿈꾸던 내가 계속 이렇게 지내도 되는걸까? 언제까지 싫어하는 일을 하고 바퀴벌레를 친구로 삼아 형편없는 음식이나 먹으면서...\n</p>\n<p style=\"text-align: right; color: #aaa; font-size: 12px; margin: 0;\">p. 12</p>\n</div>",
   "text": "데일 카네기 자기관리론 Dale Carnegie 이게 제대로된 삶인가? 모험이 가득한 삶을 꿈꾸던 내가 계속 이렇게 지내도 되는걸까? 언제까지 싫어하는 일을 하고 바퀴벌레를 친구로 삼아 형편없는 음식이나 먹으면서... p. 12"
+ },
+ {
+  "slug": "etc_61_몰입",
+  "title": "[독후감] 몰입",
+  "category": "독후감",
+  "tag": "",
+  "date": "2026-09-16",
+  "dateLabel": "26.09.16",
+  "thumb": "https://image.aladin.co.kr/product/50/36/cover500/s102534693_1.jpg",
+  "order": 64,
+  "bodyHtml": "<h4 style=\"font-family: 'Nanum Myeongjo', serif; letter-spacing: 2px;\">몰입</h4>\n<p style=\"color: #888; font-size: 13px; margin-bottom: 24px;\">Mihaly Csikszentmihalyi</p>\n<div style=\"border-left: 4px solid #FFE400; padding: 16px 20px; margin-bottom: 28px; background: #fafafa;\">\n<p style=\"font-family: 'Nanum Myeongjo', serif; font-size: 16px; line-height: 2; margin-bottom: 8px;\">\n외적 조건에 압도되지 않고 자기 행동을 스스로 조절할 수 있으며 내가 내 운명의 주인인 듯한 느낌이 들었던 순간이 있을 것이다. 이때 우리는 기분이 마냥 고양되고 행복감을 맛본다.\n</p>\n<p style=\"text-align: right; color: #aaa; font-size: 12px; margin: 0;\">p. 28</p>\n</div>",
+  "text": "몰입 Mihaly Csikszentmihalyi 외적 조건에 압도되지 않고 자기 행동을 스스로 조절할 수 있으며 내가 내 운명의 주인인 듯한 느낌이 들었던 순간이 있을 것이다. 이때 우리는 기분이 마냥 고양되고 행복감을 맛본다. p. 28"
  }
 ]
