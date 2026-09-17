@@ -1,6 +1,62 @@
-# CLAUDE.md — 누리일주(NOORY) 작업 규칙
+# 누리일주 (NOORY)
 
-## 독후감 인용문 추가 워크플로 (기본 요청)
+세계일주를 꿈꾸는 20대 청년의 여행기·독후감·에세이 블로그. 기존 정적 HTML 사이트를
+React(Vite)로 재구축한 버전. 이 저장소의 유일한 문서 파일이며, 프로젝트 설명과
+작업 규칙을 함께 관리한다.
+
+## 기능
+- 기존 글(여행기 8 + 일기/독후감 49 = 57개)을 데이터로 이전하여 그대로 표시
+- 통합 **검색** (기존 글 + 새 글)
+- 관리자 **로그인** (Supabase Auth)
+- 관리자 전용 **글 작성/수정/삭제** (새 글은 Supabase `_TdaPost`에 저장)
+- **문의하기** 폼 (Supabase `_TdaContact` 저장, 미설정 시 메일 앱으로 연결)
+- **댓글** (Supabase `_TdaComment`)
+
+## 기술 스택
+React 19 · React Router 7 · Vite · Supabase · 기존 Bootstrap 4.5.3 테마(녹색)
+
+## 로컬 실행 (Node.js 필요)
+```bash
+npm install
+npm run dev
+```
+
+## 배포
+main 브랜치 푸시 → **Vercel 자동 배포**. 별도 배포 명령은 없다.
+저장소 쪽에서 배포 성공 여부를 확인할 수단이 없으므로, 푸시 후에는 사용자에게
+사이트 확인을 안내한다.
+
+---
+
+# 데이터 구조
+
+글이 **두 갈래**로 존재한다. 혼동하지 말 것.
+
+| | 위치 | 내용 | 반영 방법 |
+|---|---|---|---|
+| 정적 JSON | `src/data/posts.json` | 기존 글 57개 | 깃 푸시 → Vercel 재배포 |
+| Supabase | `_TdaPost` 테이블 | 사이트에서 관리자로 로그인해 새로 쓴 글 | 즉시 반영 |
+
+아래 인용문 추가 작업은 **전부 정적 JSON** 쪽이다.
+
+### Supabase
+- 프로젝트 ref `pfrthfieouyqacsjkbvd` · 대시보드 https://supabase.com/dashboard/project/pfrthfieouyqacsjkbvd
+- 설정값은 `src/config.js` (anon 키는 공개돼도 되는 키, 데이터는 RLS로 보호)
+- 스키마·정책은 `supabase-setup.sql`
+- 테이블: `_TdaPost`(글) / `_TdaContact`(문의) / `_TdaComment`(댓글)
+
+### 초기 설정 (이미 완료됨 — 재구축할 때만 참고)
+1. Supabase 새 프로젝트 생성 → Project URL, anon key를 `src/config.js`에 입력
+2. Supabase **SQL Editor**에서 `supabase-setup.sql` 실행 (테이블·정책 생성)
+3. **Authentication → Users**에서 관리자 계정 추가(Auto Confirm), 가입(Sign up) 차단
+4. GitHub에 push → Vercel에서 import → 자동 배포
+
+### 데이터 재생성
+기존 HTML에서 글 데이터를 다시 뽑으려면 `extract.py` 참고. 결과물은 `src/data/posts.json`.
+
+---
+
+# 독후감 인용문 추가 워크플로 (기본 요청)
 
 사용자가 **책 본문 문장 + 페이지 번호**만 던지면(예: `"...문장... 91p`), 확인 질문 없이
 아래 순서를 끝까지 수행한다. 여러 문장을 `/`로 구분해 한 번에 주는 경우도 있다.
@@ -13,8 +69,7 @@
      오타가 아니므로 그대로 둔다.
 2. **데이터 반영** — `src/data/posts.json`의 해당 글에 인용 블록을 추가한다. (아래 포맷)
 3. **커밋 + 푸시** — 별도 확인 없이 바로 `git push origin main`.
-4. **배포** — main 푸시에 Vercel 자동 배포가 물려 있어 푸시가 곧 배포다.
-   배포 성공 여부는 저장소에서 확인할 수 없으므로 사용자에게 사이트 확인을 안내한다.
+4. **배포** — 푸시가 곧 배포. 사용자에게 사이트 확인을 안내한다.
 
 ### 하지 말 것
 - 책 페이지 내용을 **추측해서 채우지 않는다.** 책 본문은 검색으로 확인할 수 없고,
@@ -46,13 +101,3 @@
 
 ### 현재 작업 중인 글
 - `[독후감] 평일도 인생이니까` — slug `etc_62_평일도인생이니까`, `posts.json` index 65
-
-## 데이터 구조 주의점
-
-글이 **두 갈래**로 존재한다. 혼동하지 말 것.
-
-- **정적 JSON** `src/data/posts.json` — 기존 글 57개(여행기 8 + 일기/독후감 49).
-  위 인용문 작업은 전부 여기. 반영 경로는 깃 푸시 → Vercel 재배포.
-- **Supabase** — 사이트에서 관리자로 로그인해 새로 쓴 글만 `_TdaPost`에 저장.
-  프로젝트 ref `pfrthfieouyqacsjkbvd`, 설정은 `src/config.js`.
-  테이블: `_TdaPost`(글) / `_TdaContact`(문의) / `_TdaComment`(댓글).
