@@ -64,7 +64,7 @@ export default function Comments({ postSlug }) {
   }
 
   return (
-    <div className="mt-5 pt-4" style={{ borderTop: '1px solid #eee' }}>
+    <div className="comments-section">
       <h4 className="mb-4">
         댓글{comments.length > 0 && ` (${comments.length})`}
       </h4>

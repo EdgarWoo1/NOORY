@@ -84,11 +84,19 @@ a,
   max-width: 760px;
 }
 
+/* ---------- 본문 아래 간격 ----------
+   본문 마지막 요소(인용 블록 등)의 아래 여백이 본문 패딩과 겹쳐 이전/다음 글까지
+   간격이 과하게 벌어지므로 없앤다. 인용 블록은 인라인 style로 여백을 갖고 있어 !important가 필요하다. */
+.post-body > :last-child,
+.post-body > div > :last-child {
+  margin-bottom: 0 !important;
+}
+
 /* ---------- 이전/다음 글 ---------- */
 .post-nav {
   display: flex;
   gap: 12px;
-  margin-top: 40px;
+  margin-top: 32px;
   border-top: 1px solid #e5e5e5;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -119,6 +127,19 @@ a,
 .post-nav-item + .post-nav-item {
   border-left: 1px solid #e5e5e5;
   padding-left: 16px;
+}
+
+/* ---------- 댓글 ---------- */
+.comments-section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid #eee;
+}
+/* 이전/다음 글 바로 아래면 그쪽 아래 테두리가 구분선 역할을 하므로 선을 겹쳐 긋지 않는다. */
+.post-nav + .comments-section {
+  margin-top: 36px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 /* 카드 제목 줄바꿈 보호 */

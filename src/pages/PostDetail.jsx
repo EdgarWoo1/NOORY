@@ -113,8 +113,9 @@ export default function PostDetail() {
   return (
     <>
       <PageHeader title={post.category} crumb={post.category} compact />
-      <div className="container-fluid py-5">
-        <div className="container py-5">
+      {/* 아래쪽 여백은 푸터의 mt-5가 맡으므로 여기서는 두지 않는다(목록으로 ↔ 푸터 간격이 과했음). */}
+      <div className="container-fluid pt-5 pb-0">
+        <div className="container pt-5 pb-3">
           <div className="row justify-content-center">
             <div className="col-lg-9 post-column">
               {/* 메타 */}
@@ -211,7 +212,7 @@ export default function PostDetail() {
               {/* 댓글 */}
               <Comments postSlug={post.slug} />
 
-              <div className="mt-4">
+              <div className="mt-3">
                 <Link
                   to={listUrl(post.category)}
                   className="btn btn-link pl-0"
