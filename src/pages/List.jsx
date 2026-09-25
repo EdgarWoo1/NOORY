@@ -58,12 +58,20 @@ function pinFeatured(posts, category) {
   return [...posts].sort((a, b) => rankOf(a) - rankOf(b))
 }
 
-// 현재 페이지 주변만 보여 주는 윈도우 (모바일 화면 넘침 방지)
-function pageWindow(page, total, span = 2) {
+// 현재 페이지 주변 + 첫/마지막 페이지를 보여 준다. 사이가 비면 '…'로 줄인다.
+// 1페이지 ↔ 마지막 페이지를 한 번에 오갈 수 있게 하면서 모바일 화면 넘침은 막는다.
+// 빈 구간이 딱 한 페이지뿐이면 '…' 대신 그 번호를 그대로 보여 준다.
+function pageWindow(page, total, span = 1) {
   const start = Math.max(1, page - span)
   const end = Math.min(total, page + span)
   const arr = []
+  if (start > 1) arr.push(1)
+  if (start === 3) arr.push(2)
+  else if (start > 3) arr.push('gap-start')
   for (let i = start; i <= end; i++) arr.push(i)
+  if (end === total - 2) arr.push(total - 1)
+  else if (end < total - 2) arr.push('gap-end')
+  if (end < total) arr.push(total)
   return arr
 }
 
@@ -155,13 +163,19 @@ export default function List({ category }) {
                           이전
                         </button>
                       </li>
-                      {pageWindow(page, totalPages).map((n) => (
-                        <li key={n} className={`page-item${n === page ? ' active' : ''}`}>
-                          <button className="page-link" onClick={() => goPage(n)}>
-                            {n}
-                          </button>
-                        </li>
-                      ))}
+                      {pageWindow(page, totalPages).map((n) =>
+                        typeof n === 'string' ? (
+                          <li key={n} className="page-item disabled page-gap" aria-hidden="true">
+                            <span className="page-link">…</span>
+                          </li>
+                        ) : (
+                          <li key={n} className={`page-item${n === page ? ' active' : ''}`}>
+                            <button className="page-link" onClick={() => goPage(n)}>
+                              {n}
+                            </button>
+                          </li>
+                        ),
+                      )}
                       <li
                         className={`page-item${page === totalPages ? ' disabled' : ''}`}
                       >
