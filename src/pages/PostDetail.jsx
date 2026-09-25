@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getBySlug, deletePost } from '../lib/postsApi'
+import { getBySlug, deletePost, listByCategory } from '../lib/postsApi'
+import { pinFeatured, perPageOf } from '../lib/postOrder'
 import { useAuth } from '../auth'
 import { useSeo } from '../lib/seo'
 import PageHeader from '../components/PageHeader'
@@ -38,6 +39,35 @@ export default function PostDetail() {
       active = false
     }
   }, [slug])
+
+  // 이전/다음 글: 목록과 같은 순서(상단·하단 고정 포함)에서 앞뒤 글을 찾는다.
+  const [neighbors, setNeighbors] = useState({ prev: null, next: null, index: -1 })
+  useEffect(() => {
+    if (!post) return
+    let active = true
+    setNeighbors({ prev: null, next: null, index: -1 })
+    listByCategory(post.category).then((list) => {
+      if (!active) return
+      const ordered = pinFeatured(list, post.category)
+      const i = ordered.findIndex((p) => p.slug === post.slug)
+      if (i < 0) return
+      setNeighbors({ prev: ordered[i - 1] || null, next: ordered[i + 1] || null, index: i })
+    })
+    return () => {
+      active = false
+    }
+  }, [post])
+
+  // 앞뒤 글로 넘어가도 '← 목록으로'가 그 글이 있는 목록 페이지로 돌아가게 한다.
+  const neighborFrom = (n) => {
+    const from = location.state?.from
+    const base =
+      typeof from === 'string' && /^\/(diary|travel|essay)?(\?|$)/.test(from)
+        ? from.split('?')[0]
+        : CATEGORY_PATH[post.category] || '/diary'
+    const page = Math.floor(n / perPageOf(post.category)) + 1
+    return page > 1 ? `${base}?page=${page}` : base
+  }
 
   useSeo({
     title: post?.title,
@@ -82,11 +112,11 @@ export default function PostDetail() {
 
   return (
     <>
-      <PageHeader title={post.category} crumb={post.category} />
+      <PageHeader title={post.category} crumb={post.category} compact />
       <div className="container-fluid py-5">
         <div className="container py-5">
           <div className="row justify-content-center">
-            <div className="col-lg-9">
+            <div className="col-lg-9 post-column">
               {/* 메타 */}
               <div className="d-flex mb-3">
                 <span className="text-primary text-uppercase">Admin</span>
@@ -146,6 +176,36 @@ export default function PostDetail() {
                     🗑 {deleting ? '삭제 중…' : '삭제'}
                   </button>
                 </div>
+              )}
+
+              {/* 이전/다음 글 */}
+              {(neighbors.prev || neighbors.next) && (
+                <nav className="post-nav" aria-label="이전/다음 글">
+                  {neighbors.prev ? (
+                    <Link
+                      className="post-nav-item"
+                      to={`/post/${encodeURIComponent(neighbors.prev.slug)}`}
+                      state={{ from: neighborFrom(neighbors.index - 1) }}
+                    >
+                      <small>← 이전 글</small>
+                      <span>{neighbors.prev.title}</span>
+                    </Link>
+                  ) : (
+                    <span className="post-nav-item post-nav-empty" />
+                  )}
+                  {neighbors.next ? (
+                    <Link
+                      className="post-nav-item text-right"
+                      to={`/post/${encodeURIComponent(neighbors.next.slug)}`}
+                      state={{ from: neighborFrom(neighbors.index + 1) }}
+                    >
+                      <small>다음 글 →</small>
+                      <span>{neighbors.next.title}</span>
+                    </Link>
+                  ) : (
+                    <span className="post-nav-item post-nav-empty" />
+                  )}
+                </nav>
               )}
 
               {/* 댓글 */}
