@@ -51,6 +51,15 @@ main 브랜치 푸시 → **Vercel 자동 배포**. 별도 배포 명령은 없�
 3. **Authentication → Users**에서 관리자 계정 추가(Auto Confirm), 가입(Sign up) 차단
 4. GitHub에 push → Vercel에서 import → 자동 배포
 
+### 서버리스 함수 (`api/`, Vercel)
+앱은 SPA지만 아래 두 경로는 Vercel 함수가 먼저 받는다(`vercel.json` rewrites).
+- `/post/:slug` → `api/post.js` — 빌드된 `index.html`에 **글별 title·description·og:image**를
+  박아서 돌려준다. 카톡·네이버 링크 미리보기 봇이 JS를 실행하지 않기 때문. 화면은 그대로 SPA.
+- `/sitemap.xml` → `api/sitemap.js` — 정적 글 + Supabase 글로 **요청 시점에 생성**. 글을
+  추가해도 사이트맵을 손댈 필요 없다. (`public/sitemap.xml`을 다시 만들면 함수보다 우선하므로 두지 말 것)
+- 공용 조회 로직은 `api/_posts.js`. slug는 NFD/NFC가 섞여 있으니 URL에는 **저장된 형태 그대로** 쓴다.
+- 로컬 `npm run dev`에서는 이 함수들이 돌지 않는다(배포 환경에서만 동작).
+
 ### 데이터 재생성
 기존 HTML에서 글 데이터를 다시 뽑으려면 `extract.py` 참고. 결과물은 `src/data/posts.json`.
 
