@@ -108,5 +108,19 @@ main 브랜치 푸시 → **Vercel 자동 배포**. 별도 배포 명령은 없�
   `text`를 보기 때문에 빠뜨리면 검색에 안 걸린다.
 - 커밋 메시지: `'{책 제목}' 글에 인용문 추가 ({N}p)` / 여러 개면 `인용문 2개 추가 (101p, 102p)`
 
+- 사용자가 문장 뒤에 괄호로 덧붙인 메모(예: `187p (…)`)는 책 문장이 아니라 **본인 메모**다.
+  인용문 아래에 작은 회색 글씨 줄로 따로 넣는다(페이지 줄 위):
+  `<p style="color: #888; font-size: 14px; line-height: 1.8; margin-bottom: 8px;">({메모})</p>`
+- 페이지 번호가 없는 문장은 페이지 줄을 생략하고, 문장 `<p>`의 `margin-bottom`을 `0`으로 한다.
+- 새 책이면 글을 새로 만든다: slug `etc_{다음번호}_{제목붙여쓰기}`, title `[독후감] {책 제목}`,
+  category `독후감`, date는 오늘, thumb는 사용자가 준 알라딘 표지(cover500), 본문은 `<h4>` 책 제목 + 인용 블록.
+- slug는 옛 글 다수가 **NFD**로 저장돼 있어 찾을 때 `unicodedata.normalize('NFC', slug)`로 비교한다.
+
 ### 현재 작업 중인 글
-- `[독후감] 평일도 인생이니까` — slug `etc_62_평일도인생이니까`, `posts.json` index 65
+- `[독후감] 스스로 생각하고 싶은 너에게` — slug `etc_54_스스로생각`(NFD), `posts.json` index 57
+- `[독후감] 참을 수 없는 존재의 가벼움` — slug `etc_64_참을수없는존재의가벼움`, index 67
+
+## 로컬 검증
+이 맥에는 Node가 없다. 빌드·화면 확인이 필요하면 스크래치패드에 Node(nodejs.org tarball)와
+Playwright Chromium을 받아 `npm run build` → `vite preview` → 헤드리스 스크린샷으로 확인한다.
+생긴 `package-lock.json`은 커밋하지 않는다(저장소는 락파일 없이 운영 중).
