@@ -26,6 +26,10 @@ main 브랜치 푸시 → **Vercel 자동 배포**. 별도 배포 명령은 없�
 저장소 쪽에서 배포 성공 여부를 확인할 수단이 없으므로, 푸시 후에는 사용자에게
 사이트 확인을 안내한다.
 
+공개 주소는 **https://noory-shwoo.vercel.app** (noory.kr은 2026-10-11 만료로 폐기).
+주소가 바뀌면 `api/_posts.js`의 `SITE_URL`과 `public/robots.txt`의 Sitemap 줄을 함께 고친다.
+(`noory.vercel.app`은 남의 프로젝트이니 쓰지 말 것)
+
 ---
 
 # 데이터 구조
