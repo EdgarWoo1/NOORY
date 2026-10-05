@@ -5,7 +5,8 @@ import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 const staticPosts = require('../src/data/posts.json')
 
-export const SITE_URL = 'https://noory.kr'
+// 공개 주소. noory.kr 도메인은 2026-10-11 만료로 폐기, Vercel 기본 주소를 쓴다.
+export const SITE_URL = 'https://noory-shwoo.vercel.app'
 const SUPABASE_URL = 'https://pfrthfieouyqacsjkbvd.supabase.co'
 // src/config.js와 같은 공개(anon) 키. 읽기 전용이며 데이터는 RLS로 보호된다.
 const SUPABASE_KEY = 'sb_publishable_9OVRl7UVAvAnhcz3NeFXHg_EZP0v52l'
